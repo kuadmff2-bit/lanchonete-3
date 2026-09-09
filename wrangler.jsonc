@@ -7,6 +7,7 @@
   "vars": {
     "ADMIN_PASSWORD_SHA256": "bfcfc09b0c6942fcc6b279a37c51567b95ade470d4f3f218899c225227435c3b",
     "ROBOT_WEBHOOK_TOKEN_SHA256": "60c4d161dbf54a55d6980fb9e6c57cbf512c1beab5e5d7f81d6c8799515799c6",
+    "ROBOT_SERVICE_URL": "https://lanchonete-2-whatsapp-production.up.railway.app/instances/lanchonete-3-whatsapp",
     "FCM_PROJECT_ID": "lanchonete-admin",
     "FCM_ANDROID_API_KEY": "AIzaSyBxBWHnh0y5sExe81CIoQ6cV6czDFIHDGs",
     "FCM_ANDROID_APP_ID": "1:35803389315:android:2d8d6884073057cb05aab6",
