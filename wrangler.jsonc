@@ -11,7 +11,18 @@
     "FCM_PROJECT_ID": "lanchonete-admin",
     "FCM_ANDROID_API_KEY": "AIzaSyBxBWHnh0y5sExe81CIoQ6cV6czDFIHDGs",
     "FCM_ANDROID_APP_ID": "1:35803389315:android:2d8d6884073057cb05aab6",
-    "FCM_SENDER_ID": "35803389315"
+    "FCM_SENDER_ID": "35803389315",
+    "SITE_STYLE_VARIANT": "artisan",
+    "SITE_DEFAULT_NAME": "Lanchonete 3",
+    "SITE_DEFAULT_SUBTITLE": "Cardápio da casa",
+    "SITE_DEFAULT_HERO_TITLE": "Comida boa.\nPedido simples.",
+    "SITE_DEFAULT_HERO_TEXT": "Veja o cardápio, escolha seus itens e envie o pedido direto para a nossa equipe.",
+    "SITE_DEFAULT_PRIMARY": "#5b1830",
+    "SITE_DEFAULT_ACCENT": "#d8a94d",
+    "SITE_DEFAULT_BACKGROUND": "#f7f0e7",
+    "SITE_DEFAULT_SURFACE": "#fffaf3",
+    "SITE_DEFAULT_TEXT": "#351a23",
+    "SITE_DEFAULT_HERO_IMAGE": "/assets/hero-lanchonete-3.webp"
   },
   "kv_namespaces": [
     {

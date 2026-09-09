@@ -1,33 +1,35 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-brand-style="artisan">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#5b1830">
   <meta name="description" content="Cardápio digital da Lanchonete 3. Consulte os pratos e envie seu pedido pelo WhatsApp.">
   <title>Lanchonete 3 | Cardápio</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link id="siteFavicon" rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="promo-order.css">
   <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="site-branding.css">
 </head>
 <body>
 <header class="topbar">
-    <a class="brand" href="#inicio" aria-label="Lanchonete 3 - início">
-      <span class="brand-mark">03</span>
-      <span><strong>LANCHONETE 3</strong><small>Cardápio da casa</small></span>
+    <a class="brand" href="#inicio" aria-label="Lanchonete 3 - início" data-brand-home-link>
+      <span class="brand-mark"><img class="brand-logo" data-brand-logo src="assets/favicon.svg" alt=""></span>
+      <span><strong data-brand-name-upper>LANCHONETE 3</strong><small data-brand-subtitle>Cardápio da casa</small></span>
     </a>
     <a class="whatsapp-mini" data-business-whatsapp-link href="#" target="_blank" rel="noopener">WhatsApp</a>
   </header>
 
 <main id="inicio">
-    <section class="hero">
+    <section class="hero" data-brand-hero>
       <div class="hero-content">
         <span class="eyebrow">FEITO NA HORA</span>
-        <h1>Comida boa.<br>Pedido simples.</h1>
-        <p>Veja o cardápio, escolha seus itens e envie o pedido direto para a nossa equipe.</p>
+        <h1 class="hero-title" data-brand-hero-title>Comida boa.
+Pedido simples.</h1>
+        <p data-brand-hero-text>Veja o cardápio, escolha seus itens e envie o pedido direto para a nossa equipe.</p>
       </div>
-      <div class="hero-media"><img src="assets/hero-lanchonete-3.webp" alt="Hambúrguer artesanal servido com batatas rústicas"></div>
+      <div class="hero-media"><img data-brand-hero-image src="assets/hero-lanchonete-3.webp" alt="Hambúrguer artesanal servido com batatas rústicas"></div>
     </section>
 
     <section class="promo-section" id="promoSection" hidden>
@@ -124,7 +126,8 @@
     </form>
   </section>
 
-  <footer><strong>Lanchonete 3</strong><span>Cardápio digital</span></footer>
+  <footer><strong data-brand-name>Lanchonete 3</strong><span>Cardápio digital</span></footer>
+  <script src="site-branding.js"></script>
   <script src="business-contact.js"></script>
   <script src="script.js"></script>
   <script src="promo-order.js"></script>
