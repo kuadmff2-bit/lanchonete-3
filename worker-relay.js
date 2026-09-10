@@ -1,32 +1,16 @@
 import appWorker from "./worker-admin-app.js";
 import { notifyNewOrderViaRelay } from "./push-relay.js";
+import { notifyNewOrder } from "./push.js";
+import { sendNewOrderMessages } from "./whatsapp-messages.js";
+import { createOrderWithPromotion, handlePromotionsApi } from "./multi-promos-worker.js";
 export { AppStorage } from "./durable-storage.js";
 
-function withRobotControlToken(env) {
-  if (!env?.ADMIN_PASSWORD) return env;
-  return new Proxy(env, {
-    get(target, property, receiver) {
-      if (property === "ROBOT_CONTROL_TOKEN") return target.ADMIN_PASSWORD;
-      return Reflect.get(target, property, receiver);
-    }
-  });
-}
+function withRobotControlToken(env){if(!env?.ADMIN_PASSWORD)return env;return new Proxy(env,{get(target,property,receiver){if(property==="ROBOT_CONTROL_TOKEN")return target.ADMIN_PASSWORD;return Reflect.get(target,property,receiver)}})}
+function json(data,status=200,extraHeaders={}){return new Response(JSON.stringify(data),{status,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store",...extraHeaders}})}
+function replaceJsonBody(response,data){const headers=new Headers(response.headers);headers.set("content-type","application/json; charset=utf-8");headers.set("cache-control","no-store");return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers})}
+function directPushConfigured(env){return Boolean(env.FCM_PROJECT_ID&&env.FCM_CLIENT_EMAIL&&env.FCM_PRIVATE_KEY)}async function notifyCustomOrder(env,order){return directPushConfigured(env)?notifyNewOrder(env,order):notifyNewOrderViaRelay(env,order)}
+async function authorizeAdmin(request,env,ctx){return appWorker.fetch(new Request(new URL("/api/auth",request.url),{method:"GET",headers:request.headers}),env,ctx)}function authHeaders(r){const c=r.headers.get("set-cookie");return c?{"set-cookie":c}:{}}
+function robotServiceConfig(env){const raw=String(env.ROBOT_SERVICE_URL||"").trim().replace(/\/$/,""),token=String(env.ROBOT_CONTROL_TOKEN||env.ADMIN_PASSWORD||"").trim();if(!raw||!token)return null;try{const u=new URL(raw);return u.protocol==="https:"?{url:u.toString().replace(/\/$/,""),token}:null}catch{return null}}
+async function handleRobotConnectionV2(request,env,ctx){const auth=await authorizeAdmin(request,env,ctx);if(!auth.ok)return auth;const headers=authHeaders(auth),service=robotServiceConfig(env);if(!service)return json({configured:false,connected:false,qrReady:false,pairingCode:null,authState:"not_configured",message:"O serviço 24 horas do WhatsApp ainda não foi vinculado a este sistema."},200,headers);let path="/control/status",method="GET",body=null;if(request.method==="POST"){let p;try{p=await request.json()}catch{return json({error:"Dados inválidos."},400,headers)}if(p?.action==="pair-code"){path="/control/pair-code";method="POST";body=JSON.stringify({phoneNumber:String(p?.phoneNumber||"")})}else if(p?.action==="reset"){path="/control/reset";method="POST"}else if(p?.action==="restart"){path="/control/restart";method="POST"}else return json({error:"Ação inválida."},400,headers)}else if(request.method!=="GET")return json({error:"Método não permitido."},405,headers);try{const remote=await fetch(`${service.url}${path}`,{method,headers:{authorization:`Bearer ${service.token}`,accept:"application/json",...(body?{"content-type":"application/json; charset=utf-8"}:{})},body,signal:AbortSignal.timeout(15000)}),d=await remote.json().catch(()=>({}));if(!remote.ok)return json({configured:true,connected:false,qrReady:false,pairingCode:null,authState:"unreachable",error:String(d?.error||`WhatsApp indisponível (${remote.status}).`).slice(0,300)},502,headers);if(request.method==="POST")return json({configured:true,ok:true,accepted:true,action:d?.action||null,message:d?.message||"Solicitação enviada ao WhatsApp."},202,headers);const qr=typeof d?.qrImage==="string"&&d.qrImage.startsWith("data:image/")&&d.qrImage.length<=600000?d.qrImage:"",code=typeof d?.pairingCode==="string"?d.pairingCode.replace(/\s+/g,"").slice(0,32):"";return json({configured:true,connected:Boolean(d?.connected),qrReady:Boolean(qr),qrImage:qr,pairingCode:code||null,authState:String(d?.authState||"unknown").slice(0,80),connectedAt:d?.connectedAt||null,lastError:d?.lastError||null},200,headers)}catch{return json({configured:true,connected:false,qrReady:false,pairingCode:null,authState:"unreachable",error:"Não foi possível falar com o serviço 24 horas do WhatsApp."},502,headers)}}
 
-export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const runtimeEnv = withRobotControlToken(env);
-    const response = await appWorker.fetch(request, runtimeEnv, ctx);
-
-    if (url.pathname === "/api/orders" && request.method === "POST" && response.ok) {
-      const data = await response.clone().json().catch(() => ({}));
-      if (data?.order && !data?.duplicate) {
-        const task = notifyNewOrderViaRelay(runtimeEnv, data.order).catch(() => null);
-        if (ctx?.waitUntil) ctx.waitUntil(task);
-        else await task;
-      }
-    }
-
-    return response;
-  }
-};
+export default{async fetch(request,env,ctx){const url=new URL(request.url),runtimeEnv=withRobotControlToken(env);if(url.pathname==="/api/promos")return handlePromotionsApi(request,runtimeEnv,ctx,appWorker);if(url.pathname==="/api/robot/connection")return handleRobotConnectionV2(request,runtimeEnv,ctx);if(url.pathname==="/api/orders"&&request.method==="POST"){const body=await request.clone().json().catch(()=>null);if(body?.promoId){const response=await createOrderWithPromotion(request,runtimeEnv,ctx,appWorker,body);if(!response.ok)return response;const data=await response.clone().json().catch(()=>({}));if(!data?.order||data?.duplicate)return response;const pushTask=notifyCustomOrder(runtimeEnv,data.order).catch(()=>null);if(ctx?.waitUntil)ctx.waitUntil(pushTask);else await pushTask;const messaging=await sendNewOrderMessages(runtimeEnv,data.order);return replaceJsonBody(response,{...data,messaging})}}const response=await appWorker.fetch(request,runtimeEnv,ctx);if(url.pathname==="/api/orders"&&request.method==="POST"&&response.ok){const data=await response.clone().json().catch(()=>({}));if(data?.order&&!data?.duplicate){const task=notifyNewOrderViaRelay(runtimeEnv,data.order).catch(()=>null);if(ctx?.waitUntil)ctx.waitUntil(task);else await task}}return response}};
