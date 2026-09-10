@@ -39,8 +39,6 @@
   });
 })();
 
-// No APK administrativo não existe formulário: uma chave exclusiva é entregue
-// pelo app nativo e validada pelo mesmo backend do painel web.
 (() => {
   const isAdminApp = (navigator.userAgent || "").includes("LanchoneteAdminApp/");
   if (!isAdminApp) return;
@@ -71,21 +69,17 @@
   })();
 })();
 
-// Carrega a conexão e a configuração transacional do WhatsApp.
 (() => {
-  if (!document.querySelector('script[data-admin-robot]')) {
-    const script = document.createElement('script');
-    script.src = 'admin-robot.js';
+  const loadScript = (src, dataKey) => {
+    if (document.querySelector(`script[${dataKey}]`)) return;
+    const script = document.createElement("script");
+    script.src = src;
     script.defer = true;
-    script.dataset.adminRobot = '1';
+    script.setAttribute(dataKey, "1");
     document.body.appendChild(script);
-  }
+  };
 
-  if (!document.querySelector('script[data-admin-whatsapp]')) {
-    const contactScript = document.createElement('script');
-    contactScript.src = 'admin-whatsapp.js';
-    contactScript.defer = true;
-    contactScript.dataset.adminWhatsapp = '1';
-    document.body.appendChild(contactScript);
-  }
+  loadScript("admin-robot.js", "data-admin-robot");
+  loadScript("admin-whatsapp.js", "data-admin-whatsapp");
+  loadScript("admin-new-features.js", "data-admin-new-features");
 })();
