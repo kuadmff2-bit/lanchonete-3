@@ -1,21 +1,24 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
     <path
         android:fillColor="#5B1830"
-        android:pathData="M18,8h72a10,10 0,0 1,10 10v72a10,10 0,0 1,-10 10H18A10,10 0,0 1,8 90V18A10,10 0,0 1,18 8z" />
+        android:pathData="M256,0C397.4,0 512,114.6 512,256C512,397.4 397.4,512 256,512C114.6,512 0,397.4 0,256C0,114.6 114.6,0 256,0Z" />
     <path
-        android:fillColor="#FFFAF3"
-        android:pathData="M22,49 C24,31 37,21 54,21 C71,21 84,31 86,49 Z" />
-    <path
-        android:fillColor="#D8A94D"
-        android:pathData="M20,55 H88 V66 H20 Z" />
-    <path
-        android:fillColor="#FFFAF3"
-        android:pathData="M24,72 H84 V75 C84,84 77,89 68,89 H40 C31,89 24,84 24,75 Z" />
-    <path
-        android:fillColor="#D8A94D"
-        android:pathData="M40,32 a2,2 0,1 0,0.1,0 M53,28 a2,2 0,1 0,0.1,0 M67,34 a2,2 0,1 0,0.1,0" />
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#D8A94D"
+        android:strokeWidth="14"
+        android:pathData="M256,31C380.3,31 481,131.7 481,256C481,380.3 380.3,481 256,481C131.7,481 31,380.3 31,256C31,131.7 131.7,31 256,31Z" />
+    <group
+        android:translateX="64"
+        android:translateY="64"
+        android:scaleX="0.75"
+        android:scaleY="0.75">
+        <path
+            android:fillColor="#FFFAF3"
+            android:pathData="M48,384c-8.8,0 -16,7.2 -16,16c0,44.2 35.8,80 80,80h288c44.2,0 80,-35.8 80,-80c0,-8.8 -7.2,-16 -16,-16H48zM32,202c0,12.2 9.9,22 22,22h404c12.2,0 22,-9.9 22,-22c0,-17.2 -2.6,-34.4 -10.8,-49.5C447,111.7 386.9,32 256,32S65,111.6 42.8,152.5C34.6,167.6 32,184.8 32,202zM0,304c0,17.7 14.3,32 32,32h448c17.7,0 32,-14.3 32,-32s-14.3,-32 -32,-32H32c-17.7,0 -32,14.3 -32,32zM256,72a24,24 0,1 1,0 48a24,24 0,1 1,0 -48zM120,128a24,24 0,1 1,48 0a24,24 0,1 1,-48 0zM368,104a24,24 0,1 1,0 48a24,24 0,1 1,0 -48z" />
+    </group>
 </vector>

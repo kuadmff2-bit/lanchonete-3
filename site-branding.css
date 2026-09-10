@@ -44,6 +44,11 @@ body:not(.admin-view) .sheet-head small {
   color: var(--brand-primary);
 }
 
+body:not(.admin-view) .hero h1 {
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.34);
+}
+
 body:not(.admin-view) .product-card,
 body:not(.admin-view) .promo-card,
 body:not(.admin-view) .sheet,

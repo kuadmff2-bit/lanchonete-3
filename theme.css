@@ -231,6 +231,82 @@ footer strong { color: var(--wine); font-family: "Fraunces", serif; }
   background-position: center;
 }
 
+:root[data-theme="dark"] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .topbar {
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .brand-mark {
+  border-color: var(--gold);
+}
+
+:root[data-theme="dark"] .brand strong,
+:root[data-theme="dark"] .whatsapp-mini,
+:root[data-theme="dark"] .section-heading h2,
+:root[data-theme="dark"] .product-body h3,
+:root[data-theme="dark"] .info-strip strong,
+:root[data-theme="dark"] footer strong {
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .whatsapp-mini,
+:root[data-theme="dark"] .section-heading,
+:root[data-theme="dark"] .info-strip {
+  border-color: var(--gold);
+}
+
+:root[data-theme="dark"] .promo-card,
+:root[data-theme="dark"] .sheet,
+:root[data-theme="dark"] .checkout-modal {
+  background: var(--surface);
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .promo-image,
+:root[data-theme="dark"] .product-image,
+:root[data-theme="dark"] .icon-button,
+:root[data-theme="dark"] .qty-control button,
+:root[data-theme="dark"] .checkout-modal input,
+:root[data-theme="dark"] .checkout-modal select,
+:root[data-theme="dark"] .checkout-modal textarea,
+:root[data-theme="dark"] .segmented span {
+  background-color: var(--surface2);
+  border-color: var(--line);
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .promo-content h2,
+:root[data-theme="dark"] .promo-order-price,
+:root[data-theme="dark"] .price,
+:root[data-theme="dark"] .sheet-head h2,
+:root[data-theme="dark"] .cart-summary strong,
+:root[data-theme="dark"] .checkout-total strong {
+  color: var(--gold);
+}
+
+:root[data-theme="dark"] .promo-card.promo-orderable:hover {
+  background: var(--surface2);
+}
+
+:root[data-theme="dark"] .add-button {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+:root[data-theme="dark"] .add-button:hover {
+  background: var(--gold);
+  color: #211218;
+}
+
+:root[data-theme="dark"] .checkout-modal label,
+:root[data-theme="dark"] .field-label {
+  color: var(--text);
+}
+
 @media (max-width: 820px) {
   .hero { grid-template-columns: 1fr 42%; min-height: 470px; }
   .hero-content { padding: 52px 38px; }
