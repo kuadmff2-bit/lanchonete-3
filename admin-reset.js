@@ -54,17 +54,22 @@
   if (adminApp) adminApp.hidden = false;
   if (logoutButton) logoutButton.hidden = true;
 
+  document.documentElement.dataset.apkReady = "1";
+
   (async () => {
     try {
       const orders = await api("/api/orders");
       if (typeof renderDashboard === "function") renderDashboard(orders);
-      if (typeof loadProducts === "function" && typeof loadPromotion === "function") {
-        await Promise.all([loadProducts(), loadPromotion()]);
-      }
+      const tasks = [];
+      if (typeof loadProducts === "function") tasks.push(Promise.resolve(loadProducts()));
+      if (typeof loadPromotion === "function") tasks.push(Promise.resolve(loadPromotion()));
+      if (tasks.length) await Promise.allSettled(tasks);
     } catch (error) {
       if (typeof setStatus === "function") {
-        setStatus("#dashboardStatus", error.message || "Não foi possível abrir o painel administrativo.", "error");
+        setStatus("#dashboardStatus", error.message || "Não foi possível atualizar o painel.", "error");
       }
+    } finally {
+      document.documentElement.dataset.apkReady = "1";
     }
   })();
 })();
